@@ -1,0 +1,60 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>Statistics</title>
+        
+
+        <!-- Latest compiled and minified CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+        <!-- jQuery library -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+        <!-- Latest compiled JavaScript -->
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    </head>
+    <body>
+        <div class="container">
+            <div class="jumbotron">
+                <p><h2>Search for a user:</h2></p>
+                <div class="form-group">
+                    <input type="text" id="accountName" class="form-control">
+                    <button type ="button" class="btn btn-default btn-block" onclick="getUserInfo();">Search</button>
+                </div>
+                <div class="row" id="results">
+                    <div class="row" id="userName"></div>
+                    <div class="row" id="repositories">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>User's Repositories:</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="row" id="languages">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Language</th>
+                                    <th>Percentage</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div> 
+    </body>
+    <script src="./script/apiCommunication.js"></script>
+</html>
+
+
