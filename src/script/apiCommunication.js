@@ -5,6 +5,12 @@ class languagePercentage{
     }
 }
 
+var results = document.getElementById('results');
+var userName = document.getElementById('userName');
+var mails = document.getElementById('mails');
+var repoTable = document.getElementById('repoTable');
+var languagesTable = document.getElementById('languagesTable');
+
 var accountName;
 var apiUrl = "https://api.github.com/";
 var emails = [];
@@ -12,18 +18,24 @@ var reposResponse;
 var languageMap =[];
 var totalBytes = 0;
 
+var mailsText = '';
+var repoList = ''
+
 function clearVariables(){
+    results.style.display = 'none';
     accountName=""
     emails = []
     reposResponse = null
     languageMap = []
     totalBytes = 0
+    mailsText = '';
+    repoList = ''
 }
 
 function getUserInfo(){
     clearVariables();
     accountName = document.getElementById('accountName').value;
-    userAction();
+    userAction().then(displayResults());
 }
    
 const userAction = async () => {
@@ -52,6 +64,8 @@ const handleMails = async (response) => {
                 let email = author.email
                 if(!emails.includes(email)){
                     emails.push(email)
+                    mailsText += '<li class="list-group-item">' + email + '</li>';
+                    mails.innerHTML = mailsText;
                 }
             }
         }
@@ -66,6 +80,7 @@ const getRepos = async () => {
 function computeLanguageStatistics(){
     for(repoJson in reposResponse){
         let repoName = reposResponse[repoJson].name
+        repoTable.innerHTML+='<a href="' + reposResponse[repoJson].html_url + '" class="list-group-item">' + repoName + '</a>'
         getRepoLanguages(repoName)
     }
 }
@@ -87,11 +102,16 @@ const getRepoLanguages = async(repoName) => {
 }
 
 function mapHasKey(key){
-    console.log(languageMap)
     for(language in languageMap){
         if(languageMap[language].language==key){
             return languageMap.splice(language, 1)[0]//first index cause splice returns array when I need just single object
         }
     }
     return null
+}
+
+const displayResults = async() => {
+    userName.innerHTML = '<h2>' + accountName + '</h2>';
+
+    results.style.display = 'inline';
 }

@@ -25,18 +25,14 @@
                     <input type="text" id="accountName" class="form-control">
                     <button type ="button" class="btn btn-default btn-block" onclick="getUserInfo();">Search</button>
                 </div>
-                <div class="row" id="results">
+                <div class="row" id="results" style="display: none;">
                     <div class="row" id="userName"></div>
+                    <div class="row" id="mailsDiv"></div>
+                        <h2>User's mails</h2>
+                        <ul class="list-group" id="mails"></ul>
                     <div class="row" id="repositories">
-                        <table class="table table-striped">
-                            <thead>
-                                <tr>
-                                    <th>User's Repositories:</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                            </tbody>
-                        </table>
+                        <h2>User's Repositories</h2>
+                        <ul class="list-group" id="repoTable"></ul>
                     </div>
                     <div class="row" id="languages">
                         <table class="table table-striped">
@@ -46,7 +42,7 @@
                                     <th>Percentage</th>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody id="languagesTable">
                             </tbody>
                         </table>
                     </div>
