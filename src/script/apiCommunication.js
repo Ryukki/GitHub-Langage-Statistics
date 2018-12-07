@@ -21,15 +21,26 @@ var totalBytes = 0;
 var mailsText = '';
 var repoList = ''
 
+document.getElementById('accountName').addEventListener("keyup", function(event) {
+    console.log(event)
+    // Cancel the default action, if needed
+    event.preventDefault();
+    // Number 13 is the "Enter" key on the keyboard
+    if (event.keyCode === 13) {
+        getUserInfo()
+    }
+  });
+
 function clearVariables(){
-    results.style.display = 'none';
+    results.style.display = 'none'
     accountName=""
     emails = []
     reposResponse = null
     languageMap = []
     totalBytes = 0
-    mailsText = '';
+    mailsText = ''
     repoList = ''
+    repoTable.innerHTML = ""
 }
 
 function getUserInfo(){
@@ -80,7 +91,7 @@ const getRepos = async () => {
 function computeLanguageStatistics(){
     for(repoJson in reposResponse){
         let repoName = reposResponse[repoJson].name
-        repoTable.innerHTML+='<a href="' + reposResponse[repoJson].html_url + '" class="list-group-item">' + repoName + '</a>'
+        repoTable.innerHTML+='<a target="_blank" rel="noopener noreferrer" href="' + reposResponse[repoJson].html_url + '" class="list-group-item">' + repoName + '</a>'
         getRepoLanguages(repoName)
     }
 }
@@ -98,6 +109,14 @@ const getRepoLanguages = async(repoName) => {
             languageObject = new languagePercentage(singleLanguage, byteAmount)
         }
         languageMap.push(languageObject)
+        printPercentages()
+    }
+}
+
+function printPercentages(){
+    languagesTable.innerHTML = "";
+    for(language in languageMap){
+        languagesTable.innerHTML += '<tr><td>' + languageMap[language].language + '</td><td>' + languageMap[language].bytes/totalBytes + '%</td></tr>'
     }
 }
 
