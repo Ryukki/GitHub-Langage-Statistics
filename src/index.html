@@ -20,22 +20,25 @@
     <body>
         <div class="container">
             <div class="jumbotron">
-                <p><h2>Search for a user:</h2></p>
-                <div class="form-group">
-                    <input type="text" id="accountName" class="form-control">
-                    <button type ="button" class="btn btn-default btn-block" onclick="getUserInfo();">Search</button>
+                <div class="row">
+                    <p><h2>Search for a user:</h2></p>
+                    <div class="form-group">
+                        <input type="text" id="accountName" class="form-control">
+                        <button type ="button" class="btn btn-default btn-block" onclick="getUserInfo();">Search</button>
+                    </div>
                 </div>
                 <div class="row" id="results" style="display: none;">
                     <div class="row" id="userName"></div>
-                    <div class="row" id="mailsDiv"></div>
+                    <div class="row" id="mailsDiv">
                         <h2>User's mails</h2>
                         <ul class="list-group" id="mails"></ul>
+                    </div>
                     <div class="row" id="repositories">
                         <h2>User's Repositories</h2>
                         <ul class="list-group" id="repoTable"></ul>
                     </div>
                     <div class="row" id="languages">
-                        <table class="table table-bordered table-hover bg-default">
+                        <table class="table">
                             <thead>
                                 <tr>
                                     <th>Language</th>

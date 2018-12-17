@@ -114,10 +114,19 @@ const getRepoLanguages = async(repoName) => {
 }
 
 function printPercentages(){
+    languageMap.sort(compare);
     languagesTable.innerHTML = "";
     for(language in languageMap){
         languagesTable.innerHTML += '<tr><td>' + languageMap[language].language + '</td><td>' + languageMap[language].bytes/totalBytes + '%</td></tr>'
     }
+}
+
+function compare(l1, l2){
+    if(l1.bytes < l2.bytes)
+        return 1;
+    if(l1.bytes > l2.bytes)
+        return -1;
+    return 0;
 }
 
 function mapHasKey(key){
