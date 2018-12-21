@@ -31,45 +31,32 @@ document.getElementById('accountName').addEventListener("keyup", function(event)
   });
 
 function clearVariables(){
-    results.style.display = 'none'
+    results.style.display = "none"
     accountName=""
     emails = []
+    mails.innerHTML = ""
     reposResponse = null
     languageMap = []
     totalBytes = 0
     mailsText = ''
     repoList = ''
     repoTable.innerHTML = ""
+    languagesTable.innerHTML = ""
 }
 
 function getUserInfo(){
     clearVariables();
     accountName = document.getElementById('accountName').value;
-    userAction().then(displayResults());
+    userAction();
 }
    
 const userAction = async () => {
     let response = await fetch(apiUrl + "users/" + accountName);
     if(handleErrors(response)){
-        let jsonResponse = response.json()
+        let jsonResponse = await (response).json()
         handleResponse(jsonResponse)
+        displayResults()
     }
-    //let response = await (await fetch(apiUrl + "users/" + accountName)).json();
-    //console.log(response);
-    //handleResponse(response)
-
-    // await fetch(apiUrl + "users/" + accountName)
-    // .then(handleErrors)
-    // .then(function(response) {
-    //     //response.json().then(data => ({
-    //     //    handleResponse(data)
-    //     //}))
-    //     let jsonResponse = response.json()
-    //     console.log(jsonResponse)
-    //     //handleResponse(jsonResponse)
-    // }).catch(function(error) {
-    //     console.log(error);
-    // });
 }
 
 function handleErrors(response) {
@@ -80,36 +67,19 @@ function handleErrors(response) {
     return true;
 }
   
-function handleResponse(response){
-    handleMails(response);
+function handleResponse(jsonResponse){
+    handleMails(jsonResponse);
     getRepos();
 } 
 
-const handleMails = async (response) => {
-    let mail = response.mail
+const handleMails = async (jsonResponse) => {
+    let mail = jsonResponse.mail
     if(mail!=null){
         emails.push(mail)
     }
-    // let emailsResponse = await (await fetch(apiUrl + "users/" + accountName + "/events")).json();
-    // for(event in emailsResponse){
-    //     let payloadCommits = emailsResponse[event].payload.commits
-    //     for(commit in payloadCommits){
-    //         let author = payloadCommits[commit].author
-    //         let username = emailsResponse[event].actor.display_login
-    //         if(username.toString().toLowerCase()===author.name.toString().toLowerCase()){
-    //             let email = author.email
-    //             if(!emails.includes(email)){
-    //                 emails.push(email)
-    //                 mailsText += '<li class="list-group-item">' + email + '</li>';
-    //                 mails.innerHTML = mailsText;
-    //             }
-    //         }
-    //     }
-    // }
-    await fetch(apiUrl + "users/" + accountName + "/events")
-    .then(handleErrors)
-    .then(function(response) {
-        let emailsResponse = response.json()
+    let response = await fetch(apiUrl + "users/" + accountName + "/events");
+    if(handleErrors(response)){
+        let emailsResponse = await (response).json()
         for(event in emailsResponse){
             let payloadCommits = emailsResponse[event].payload.commits
             for(commit in payloadCommits){
@@ -125,24 +95,15 @@ const handleMails = async (response) => {
                 }
             }
         }
-    }).catch(function(error) {
-        //alert("Please check your internet connection.");
-        console.log(error);
-    });
+    }
 }
 
 const getRepos = async () => {
-    //reposResponse = await (await fetch(apiUrl + "users/" + accountName + "/repos")).json();
-    //computeLanguageStatistics();
-    await fetch(apiUrl + "users/" + accountName + "/repos")
-    .then(handleErrors)
-    .then(function(response) {
-        reposResponse = response.json()
+    response = await fetch(apiUrl + "users/" + accountName + "/repos");
+    if(handleErrors(response)){
+        reposResponse = await (response).json()
         computeLanguageStatistics();
-    }).catch(function(error) {
-        //alert("Please check your internet connection.");
-        console.log(error);
-    });
+    }
 }
 
 function computeLanguageStatistics(){
@@ -154,24 +115,9 @@ function computeLanguageStatistics(){
 }
 
 const getRepoLanguages = async(repoName) => {
-    // let repoLanguages = await (await fetch(apiUrl + "repos/" + accountName + "/" + repoName + "/languages")).json();
-    // for(singleLanguage in repoLanguages){
-    //     byteAmount = repoLanguages[singleLanguage]
-    //     totalBytes += byteAmount
-        
-    //     let languageObject = mapHasKey(singleLanguage)
-    //     if(languageObject!=null){
-    //         languageObject.bytes+=byteAmount
-    //     }else{
-    //         languageObject = new languagePercentage(singleLanguage, byteAmount)
-    //     }
-    //     languageMap.push(languageObject)
-    //     printPercentages()
-    // }
-    await fetch(apiUrl + "repos/" + accountName + "/" + repoName + "/languages")
-    .then(handleErrors)
-    .then(function(response) {
-        let repoLanguages = response.json()
+    let response = await fetch(apiUrl + "repos/" + accountName + "/" + repoName + "/languages");
+    if(handleErrors(response)){
+        let repoLanguages = await (response).json()
         for(singleLanguage in repoLanguages){
             byteAmount = repoLanguages[singleLanguage]
             totalBytes += byteAmount
@@ -185,10 +131,7 @@ const getRepoLanguages = async(repoName) => {
             languageMap.push(languageObject)
             printPercentages()
         }
-    }).catch(function(error) {
-        //alert("Please check your internet connection.");
-        console.log(error);
-    });
+    }
 }
 
 function printPercentages(){
@@ -219,5 +162,5 @@ function mapHasKey(key){
 const displayResults = async() => {
     userName.innerHTML = '<h2>' + accountName + '</h2>';
 
-    results.style.display = 'inline';
+    results.style.display = "inline";
 }
